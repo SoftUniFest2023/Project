@@ -7,6 +7,7 @@ import {
   signOut,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  deleteUser,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -178,6 +179,15 @@ function LoginForm() {
     }
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      await deleteUser(user);
+      console.log("Successfully deleted user");
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   if (!user) {
     return (
       <div>
@@ -278,6 +288,7 @@ function LoginForm() {
     <div>
       <h2>Welcome, {username}</h2>
       <button onClick={handleSignOut}>Sign Out</button>
+      <button onClick={handleDeleteUser}>Delete account</button>
 
       {error && <p>{error}</p>}
     </div>

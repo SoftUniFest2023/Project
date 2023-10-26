@@ -1,3 +1,3 @@
 export default function app() {
-  return <></>;
+  return <><p>This is the home page</p></>;
 }
