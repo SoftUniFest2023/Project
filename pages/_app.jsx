@@ -48,7 +48,11 @@ export default function MyApp({ Component, pageProps }) {
     // Check email verification status when the user changes
     if (user) {
       isEmailVerified(user).then((verified) => {
-        if (!verified && router.pathname !== "/ConfirmEmail") {
+        if (
+          !verified &&
+          router.pathname !== "/ConfirmEmail" &&
+          router.pathname !== "/register"
+        ) {
           // If the user's email is not verified and they are not on the login, "/" or "/ConfirmEmail" page, redirect to login
           router.push("/ConfirmEmail");
         }
@@ -63,11 +67,9 @@ export default function MyApp({ Component, pageProps }) {
 
   if (
     !user &&
-    router.pathname !== "/login" &&
+    router.pathname !== "/register" &&
     router.pathname !== "/" &&
-    router.pathname !== "/ConfirmEmail" &&
-    router.pathname == "/Languages/" &&
-    !router.pathname.startsWith("/Languages/")
+    router.pathname !== "/ConfirmEmail"
   ) {
     // User is not signed in and not on the login page or the "/" page, redirect to login
     router.push("/");

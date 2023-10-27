@@ -9,6 +9,7 @@ import {
   sendEmailVerification,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  reauthenticateWithPopup,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -16,11 +17,8 @@ import {
   doc,
   setDoc,
   getDoc,
-  where,
-  query,
   deleteDoc,
 } from "firebase/firestore";
-import { getDocs } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
@@ -36,7 +34,7 @@ function LoginForm() {
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
   const [user, setUser] = useState(null);
-  const [showUsernameField, setShowUsernameField] = useState(false);
+  const [showUsernameField, setShowUsernameField] = useState(true);
   const [isLogin, setIsLogin] = useState(true); // Add state for login/signup switch
 
   const router = useRouter();
@@ -80,6 +78,17 @@ function LoginForm() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
+    if (!username) {
+      setError("Please enter a username.");
+      return;
+    }
+
+    const selectedRole = prompt("Choose your role (customer or seller):");
+    if (selectedRole !== "customer" && selectedRole !== "seller") {
+      setError("Invalid role selection.");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -87,6 +96,17 @@ function LoginForm() {
         password
       );
       console.log("Signup successful");
+
+      // Set the user's chosen role during sign-up
+      const userDocRef = doc(collection(db, "users"), userCredential.user.uid);
+      const userData = {
+        username: username,
+        email: userCredential.user.email,
+        role: selectedRole,
+      };
+      await setDoc(userDocRef, userData);
+
+      setShowUsernameField(false);
 
       // Send the email verification link to the user
       await sendEmailVerification(userCredential.user);
@@ -98,70 +118,43 @@ function LoginForm() {
     }
   };
 
-  const handleUsernameSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const userQuery = query(
-        collection(db, "users"),
-        where("username", "==", username)
-      );
-      const userQuerySnapshot = await getDocs(userQuery);
-
-      if (!userQuerySnapshot.empty) {
-        setError("Username already exists. Please try another one.");
-        return;
-      }
-
-      const userDocRef = doc(collection(db, "users"), user.uid);
-      const userData = {
-        username: username,
-        email: user.email,
-      };
-      await setDoc(userDocRef, userData);
-      setShowUsernameField(false);
-      setUsername("");
-      setError("");
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
   const handleGoogleSignIn = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
       console.log("Google sign-in successful");
-      const isNewUser = userCredential.additionalUserInfo.isNewUser;
-      setUsername("");
 
-      if (isNewUser) {
-        // If it's a new user, prompt them to set a password
-        const newPassword = prompt("Please enter a password:");
-        if (newPassword === null) {
-          // User canceled the prompt, handle as needed
+      const user = userCredential.user;
+
+      const userDocRef = doc(collection(db, "users"), user.uid);
+      const userSnapshot = await getDoc(userDocRef);
+
+      if (userSnapshot.exists()) {
+        // User already exists in the database, so treat them as an existing user
+        // You can add any additional logic here for existing users
+      } else {
+        // User does not exist in the database, so treat them as a new user
+        const selectedRole = prompt("Choose your role (customer or seller):");
+
+        if (selectedRole !== "customer" && selectedRole !== "seller") {
+          setError("Invalid role selection.");
           return;
         }
 
-        try {
-          // Create the user with the provided password
-          await createUserWithEmailAndPassword(
-            auth,
-            userCredential.user.email,
-            newPassword
-          );
-          console.log("Signup successful with user-set password");
+        const username = prompt("Enter a username:");
 
-          // Send the email verification link to the user
-          await sendEmailVerification(userCredential.user);
-
-          // Redirect to the email confirmation page
-          router.push("/ConfirmEmail");
-        } catch (error) {
-          setError(error.message);
+        if (!username) {
+          setError("Please enter a username.");
+          return;
         }
-      } else {
-        // Handle the case for returning users if necessary
+
+        // Set the user's chosen role during sign-up
+        const userData = {
+          username: username,
+          email: user.email,
+          role: selectedRole,
+        };
+        await setDoc(userDocRef, userData);
       }
 
       setEmail("");
@@ -324,24 +317,6 @@ function LoginForm() {
             {error && <p>{error}</p>}
           </>
         )}
-      </div>
-    );
-  }
-
-  if (showUsernameField) {
-    return (
-      <div>
-        <form onSubmit={handleUsernameSubmit}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <button type="submit">Save Username</button>
-        </form>
-
-        {error && <p>{error}</p>}
       </div>
     );
   }
