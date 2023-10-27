@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import styles from "../styles/sell.module.css";
 
 function CreatePost() {
   const [title, setTitle] = useState("");
@@ -32,6 +33,11 @@ function CreatePost() {
       return;
     }
 
+    if (price < 0) {
+      alert("Price cannot be lower than zero!");
+      return;
+    }
+
     // Initialize Firestore and Storage
     const db = getFirestore();
     const storage = getStorage();
@@ -55,7 +61,7 @@ function CreatePost() {
       const postRef = collection(db, "posts");
       await addDoc(postRef, post);
 
-      console.log("Post created successfully");
+      alert("Post created successfully");
 
       // Reset form fields
       setTitle("");
@@ -68,32 +74,65 @@ function CreatePost() {
   };
 
   return (
-    <div>
-      <h1>Create a Post</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Title:</label>
-        <input type="text" value={title} onChange={handleTitleChange} />
-        <br />
+    <div className={styles.all}>
+      <div className={styles.newOffer}>
+        <h1 className={styles.formTitle}>Make a new sale</h1>
+        <form onSubmit={handleSubmit} className={styles.newOfferForm}>
+          <label className={styles.textShadow}>Title:</label>
+          <input
+            required
+            className={styles.inputArea}
+            placeholder="Product name"
+            type="text"
+            value={title}
+            onChange={handleTitleChange}
+          />
+          <br />
 
-        <label>Content:</label>
-        <textarea value={content} onChange={handleContentChange} rows="4" />
-        <br />
+          <label className={styles.textShadow}>Content:</label>
+          <textarea
+            required
+            placeholder="Description"
+            className={styles.inputArea}
+            value={content}
+            onChange={handleContentChange}
+            rows="4"
+          />
+          <br />
 
-        <label>Price:</label>
-        <input
-          type="number"
-          value={price}
-          onChange={handlePriceChange}
-          step="0.01" // Specify the step for floating-point numbers
-        />
-        <br />
+          <label className={styles.textShadow}>Price in dollars:</label>
+          <input
+            placeholder="Price"
+            required
+            className={styles.inputArea}
+            type="number"
+            value={price}
+            onChange={handlePriceChange}
+            step="0.01" // Specify the step for floating-point numbers
+          />
+          <br />
 
-        <label>Image:</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-        <br />
+          <label className={styles.textShadow}>Image:</label>
+          <input
+            required
+            className={styles.inputArea}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          <br />
 
-        <button type="submit">Create Post</button>
-      </form>
+          <button type="submit">Upload</button>
+        </form>
+      </div>
+
+      <p className={styles.formDesc}>
+        Welcome to our Product Offer Submission Form, where you can effortlessly
+        share your exciting product offerings with the community. Whether you're
+        a supplier, manufacturer, or just have an exceptional product to
+        propose, this user-friendly form makes it easy for you to showcase your
+        offerings and connect with potential buyers.
+      </p>
     </div>
   );
 }
