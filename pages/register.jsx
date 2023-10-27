@@ -297,8 +297,6 @@ function LoginForm() {
                         Business name
                       </label>
                     </div>
-
-                    {error && <p>{error}</p>}
                   </>
                 )}
                 <form onSubmit={handleSignup} className={styles.form}>
