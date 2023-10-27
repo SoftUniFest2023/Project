@@ -1,12 +1,19 @@
-import React, { useState } from "react";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useState } from "react";
 import styles from "../styles/sell.module.css";
 
 function CreatePost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [price, setPrice] = useState(0); // Initialize price as 0
+  const [price, setPrice] = useState(0);
   const [image, setImage] = useState(null);
 
   const handleTitleChange = (e) => {
@@ -18,7 +25,7 @@ function CreatePost() {
   };
 
   const handlePriceChange = (e) => {
-    setPrice(parseFloat(e.target.value)); // Parse the input to a floating-point number
+    setPrice(parseFloat(e.target.value));
   };
 
   const handleImageChange = (e) => {
@@ -43,6 +50,20 @@ function CreatePost() {
     const storage = getStorage();
 
     try {
+      // Check if a post with the same title and content already exists
+      const postRef = collection(db, "posts");
+      const queryCondition = query(
+        postRef,
+        where("title", "==", title),
+        where("content", "==", content)
+      );
+      const querySnapshot = await getDocs(queryCondition);
+
+      if (!querySnapshot.empty) {
+        alert("A post with the same title and content already exists.");
+        return;
+      }
+
       // 1. Upload the image to the storage bucket
       const storageRef = ref(storage, `images/${image.name}`);
       await uploadBytes(storageRef, image);
@@ -50,23 +71,25 @@ function CreatePost() {
       // 2. Get the download URL of the uploaded image
       const imageUrl = await getDownloadURL(storageRef);
 
-      // 3. Save the post in the Firestore database
+      // 3. Get the current date and time
+      const currentDate = new Date();
+
+      // 4. Save the post in the Firestore database with the date field
       const post = {
         title: title,
         content: content,
-        price: price, // Add the price field
+        price: price,
         imageUrl: imageUrl,
+        date: currentDate, // Add the date field
       };
 
-      const postRef = collection(db, "posts");
       await addDoc(postRef, post);
 
       alert("Post created successfully");
-
       // Reset form fields
       setTitle("");
       setContent("");
-      setPrice(0); // Reset price to 0
+      setPrice(0);
       setImage(null);
     } catch (error) {
       console.error("Error creating post:", error);
