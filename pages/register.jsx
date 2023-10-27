@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../lib/firebase";
+import styles from "../styles/register.module.css";
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
@@ -248,73 +249,164 @@ function LoginForm() {
       <div>
         {isLogin ? (
           <>
-            <form onSubmit={handleSignup}>
-              <h2>Signup</h2>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+            <div className={styles.all}>
+              <div className={styles.container}>
+                <div className={styles.text}>Signup Form</div>
+
+                <div className={styles.inputData}>
+                  <input
+                    className={styles.input}
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <div className={styles.underline}></div>
+                  <label className={styles.label} for="">
+                    Email Address
+                  </label>
+                </div>
+                <div className={styles.inputData}>
+                  <input
+                    className={styles.input}
+                    type="password"
+                    autoComplete="new-password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <div className={styles.underline}></div>
+                  <label className={styles.label} for="">
+                    Password
+                  </label>
+                </div>
+
                 {showUsernameField && (
                   <>
-                    <input
-                      type="text"
-                      placeholder="Username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
+                    <div className={styles.inputData}>
+                      <input
+                        className={styles.input}
+                        type="text"
+                        required
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                      <div className={styles.underline}></div>
+                      <label className={styles.label} for="">
+                        Business name
+                      </label>
+                    </div>
+
                     {error && <p>{error}</p>}
                   </>
                 )}
-                <button type="submit">Signup</button>
-                <p>
-                  Имате акаунт?{" "}
-                  <a onClick={toggleLoginSignup}>
-                    {isLogin ? "Впишете се!" : "Направете си акаунт!"}
+                <form onSubmit={handleSignup} className={styles.form}>
+                  <div>
+                    <div className={`${styles.form_row} ${styles.submit_btn}`}>
+                      <div className={styles.inputData}>
+                        <div className={styles.inner}></div>
+                        <input
+                          className={styles.input}
+                          type="submit"
+                          value="Sign up"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <button
+                  onClick={handleGoogleSignIn}
+                  className={styles.googleBTN}
+                >
+                  <i class="fa-brands fa-google"></i> Google Sign-In
+                </button>
+
+                <p className={styles.additionalText}>
+                  Already have an account?{" "}
+                  <a onClick={toggleLoginSignup} className={styles.clickable}>
+                    {isLogin ? "Log in!" : "Sign up!"}
                   </a>
                 </p>
                 {error && <p>{error}</p>}
               </div>
-            </form>
+
+              <img
+                className={styles.img}
+                src="/devt-mag-high-resolution-logo-transparent.png"
+                alt=""
+              />
+            </div>
           </>
         ) : (
           <>
-            <form onSubmit={handleLogin}>
-              <h2>Login</h2>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button type="submit">Login</button>
+            <div className={styles.all}>
+              <div className={styles.container}>
+                <div className={styles.text}>Login Form</div>
 
-              <div>
-                <button onClick={handleGoogleSignIn}>Google Sign-In</button>
+                <div className={styles.inputData}>
+                  <input
+                    className={styles.input}
+                    type="email"
+                    autoComplete="email"
+                    required="true"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <div className={styles.underline}></div>
+                  <label className={styles.label} for="">
+                    Email Address
+                  </label>
+                </div>
+                <div className={styles.inputData}>
+                  <input
+                    className={styles.input}
+                    type="password"
+                    required="true"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <div className={styles.underline}></div>
+                  <label className={styles.label} for="">
+                    Password
+                  </label>
+                </div>
+                <form onSubmit={handleLogin} className={styles.form}>
+                  <div className={`${styles.form_row} ${styles.submit_btn}`}>
+                    <div className={styles.inputData}>
+                      <div className={styles.inner}></div>
+                      <input
+                        className={styles.input}
+                        type="submit"
+                        value="Log in"
+                      />
+                    </div>
+                  </div>
+                </form>
+
+                <button
+                  onClick={handleGoogleSignIn}
+                  className={styles.googleBTN}
+                >
+                  <i class="fa-brands fa-google"></i> Google Sign-In
+                </button>
+
+                <p className={styles.additionalText}>
+                  Don't have an account?{" "}
+                  <a onClick={toggleLoginSignup} className={styles.clickable}>
+                    {isLogin ? "Log in!" : "Sign up!"}
+                  </a>
+                </p>
+
+                {error && <p>{error}</p>}
               </div>
-              <p>
-                Нямате акаунт?{" "}
-                <a onClick={toggleLoginSignup}>
-                  {isLogin ? "Впишете се!" : "Създайте си!"}
-                </a>
-              </p>
-            </form>
 
-            {error && <p>{error}</p>}
+              <img
+                className={styles.img}
+                src="/devt-mag-high-resolution-logo-transparent.png"
+                alt="Logo"
+              />
+            </div>
           </>
         )}
       </div>

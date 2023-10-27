@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../lib/firebase";
 import { getDoc, doc, collection, getFirestore } from "firebase/firestore";
+import "../styles/reset.css";
 
 initializeApp(firebaseConfig);
 
@@ -48,11 +49,7 @@ export default function MyApp({ Component, pageProps }) {
     // Check email verification status when the user changes
     if (user) {
       isEmailVerified(user).then((verified) => {
-        if (
-          !verified &&
-          router.pathname !== "/ConfirmEmail" &&
-          router.pathname !== "/register"
-        ) {
+        if (!verified && router.pathname !== "/ConfirmEmail") {
           // If the user's email is not verified and they are not on the login, "/" or "/ConfirmEmail" page, redirect to login
           router.push("/ConfirmEmail");
         }
@@ -67,9 +64,11 @@ export default function MyApp({ Component, pageProps }) {
 
   if (
     !user &&
-    router.pathname !== "/register" &&
+    router.pathname !== "/login" &&
     router.pathname !== "/" &&
-    router.pathname !== "/ConfirmEmail"
+    router.pathname !== "/ConfirmEmail" &&
+    router.pathname == "/Languages/" &&
+    !router.pathname.startsWith("/Languages/")
   ) {
     // User is not signed in and not on the login page or the "/" page, redirect to login
     router.push("/");

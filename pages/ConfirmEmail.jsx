@@ -53,7 +53,7 @@ export default function ConfirmEmail() {
         setError("Email confirmed successfully. Redirecting to login page...");
         setTimeout(() => {
           router.push("/register");
-        }, 2000);
+        }, 3000);
       } else if (user && !user.emailVerified) {
         setError("Email verification is pending. Please check your email.");
       } else {
