@@ -71,6 +71,9 @@ const Home = ({ posts }) => {
               Available Products
             </span>
             <div className={HeaderStyles.headerNavLow}>
+              <a className={HeaderStyles.headerLink} href="./">
+                Home
+              </a>
               <a
                 className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
                 href="#"
@@ -92,6 +95,9 @@ const Home = ({ posts }) => {
         </span>
 
         <div className={HeaderStyles.headerNavHigh}>
+          <a className={HeaderStyles.headerLink} href="./">
+            Home
+          </a>
           <a
             className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
             href="#"

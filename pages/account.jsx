@@ -160,6 +160,9 @@ const Profile = () => {
           <div className={HeaderStyles.dropMenu}>
             <span className={HeaderStyles.pageDescriberLow}>Your Account</span>
             <div className={HeaderStyles.headerNavLow}>
+              <a className={HeaderStyles.headerLink} href="./">
+                Home
+              </a>
               <a className={HeaderStyles.headerLink} href="./buy">
                 Buy
               </a>
@@ -179,6 +182,9 @@ const Profile = () => {
         <span className={HeaderStyles.pageDescriberHigh}>Your Account</span>
 
         <div className={HeaderStyles.headerNavHigh}>
+          <a className={HeaderStyles.headerLink} href="./">
+            Home
+          </a>
           <a className={HeaderStyles.headerLink} href="./buy">
             Buy
           </a>

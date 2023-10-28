@@ -139,6 +139,9 @@ function CreatePost() {
           <div className={HeaderStyles.dropMenu}>
             <span className={HeaderStyles.pageDescriberLow}>Your Deals</span>
             <div className={HeaderStyles.headerNavLow}>
+              <a className={HeaderStyles.headerLink} href="./">
+                Home
+              </a>
               <a className={HeaderStyles.headerLink} href="./buy">
                 Buy
               </a>
@@ -158,6 +161,9 @@ function CreatePost() {
         <span className={HeaderStyles.pageDescriberHigh}>Your Deals</span>
 
         <div className={HeaderStyles.headerNavHigh}>
+          <a className={HeaderStyles.headerLink} href="./">
+            Home
+          </a>
           <a className={HeaderStyles.headerLink} href="./buy">
             Buy
           </a>
