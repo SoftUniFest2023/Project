@@ -5,6 +5,7 @@ import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "../lib/firebase";
 import PostList from "../components/buyList";
 import HeaderStyles from "../styles/header.module.css";
+import styles from "../styles/buy.module.css";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -105,16 +106,21 @@ const Home = ({ posts }) => {
           </a>
         </div>
       </header>
-      <h1>All Posts</h1>
-      <label>Sort By:</label>
-      <select value={sortBy} onChange={handleSortChange}>
-        <option value="titleAsc">Title (A-Z)</option>
-        <option value="titleDesc">Title (Z-A)</option>
-        <option value="priceAsc">Price (Low to High)</option>
-        <option value="priceDesc">Price (High to Low)</option>
-        <option value="dateAsc">Date (Old to New)</option>
-        <option value="dateDesc">Date (New to Old)</option>
-      </select>
+      <div className={styles.main}>
+        <h1 className={styles.title}>All Posts</h1>
+        <div className={styles.filter}>
+          <label className={styles.label}>Sort By:</label>
+          <select value={sortBy} onChange={handleSortChange}>
+            <option value="titleAsc">Title (A-Z)</option>
+            <option value="titleDesc">Title (Z-A)</option>
+            <option value="priceAsc">Price (Low to High)</option>
+            <option value="priceDesc">Price (High to Low)</option>
+            <option value="dateAsc">Date (Old to New)</option>
+            <option value="dateDesc">Date (New to Old)</option>
+          </select>
+        </div>
+      </div>
+
       <PostList posts={sortedPosts} />
     </div>
   );
