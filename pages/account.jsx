@@ -21,6 +21,8 @@ import { useRouter } from "next/router";
 
 import { signOut, reauthenticateWithCredential } from "firebase/auth";
 import toast from "react-hot-toast";
+import styles from "../styles/account.module.css";
+import HeaderStyles from "../styles/header.module.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -140,25 +142,101 @@ const Profile = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
+      {/* Header */}
+      <header className={HeaderStyles.header}>
+        <a href="#">
+          <img
+            className={HeaderStyles.headerLogo}
+            src="../devt-mag-high-resolution-logo-transparent.png"
+            alt="Logo"
+          />
+        </a>
+
+        <div className={HeaderStyles.barsSection}>
+          <span className={HeaderStyles.bars}>
+            <i className="fa-solid fa-bars" />
+          </span>
+          <div className={HeaderStyles.dropMenu}>
+            <span className={HeaderStyles.pageDescriberLow}>Your Account</span>
+            <div className={HeaderStyles.headerNavLow}>
+              <a className={HeaderStyles.headerLink} href="./buy">
+                Buy
+              </a>
+              <a className={HeaderStyles.headerLink} href="./sell">
+                Sell
+              </a>
+              <a
+                className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
+                href="#"
+              >
+                Profile
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <span className={HeaderStyles.pageDescriberHigh}>Your Account</span>
+
+        <div className={HeaderStyles.headerNavHigh}>
+          <a className={HeaderStyles.headerLink} href="./buy">
+            Buy
+          </a>
+          <a className={HeaderStyles.headerLink} href="./sell">
+            Sell
+          </a>
+          <a
+            className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
+            href="#"
+          >
+            Profile
+          </a>
+        </div>
+      </header>
+
       {user ? (
-        <div>
-          <h1>Welcome, {user.username || user.email || user.uid}</h1>
-          <button onClick={handleSignOut}>Sign Out</button>
-          <button onClick={handleDeleteProfile}>Delete Profile</button>
-          <h2>Your Posts</h2>
-          <ul>
-            {userPosts.map((post) => (
-              <li key={post.id}>
-                <Link href={`/post/${post.id}`}>
-                  <p>
-                    <h3>{post.title}</h3>
-                  </p>
-                </Link>
-                <p>{post.content}</p>
-              </li>
-            ))}
-          </ul>
+        <div className={styles.userInfo}>
+          <h1>Welcome, {user.displayName || user.email || user.uid}</h1>
+          <div>
+            <button className={styles.button} onClick={handleSignOut}>
+              Sign Out
+            </button>
+            <button className={styles.button} onClick={handleDeleteProfile}>
+              Delete Profile
+            </button>
+          </div>
+          <div className={styles.userPosts}>
+            <h2 className={styles.userPostsName}>Your Posts</h2>
+            <ol type="I">
+              {userPosts.map((post) => (
+                <li key={post.id} className={styles.post}>
+                  <div>
+                    <Link className={styles.link} href={`/post/${post.id}`}>
+                      <p className={styles.link}>
+                        <h3 className={styles.desc}>
+                          <span className={styles.descTitle}>
+                            Product Name:{" "}
+                          </span>
+                          <span className={styles.descContent}>
+                            {post.title}
+                          </span>
+                        </h3>
+                      </p>
+                    </Link>
+                    <p className={styles.desc}>
+                      <span className={styles.descTitle}>Description: </span>
+                      <span className={styles.descContent}>{post.content}</span>
+                    </p>
+                  </div>
+                  <img
+                    className={styles.descImg}
+                    src={post.imageUrl}
+                    alt="post IMG"
+                  />
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       ) : (
         <p>Please sign in to view your profile.</p>

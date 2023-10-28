@@ -59,6 +59,7 @@
   cursor: pointer;
   display: inline-block;
   transition: all 200ms linear;
+  text-decoration: none;
 }
 
 .BuyButton:hover,

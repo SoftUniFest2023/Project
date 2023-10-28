@@ -6,6 +6,7 @@ import { firebaseConfig } from "../lib/firebase";
 import { getDoc, doc, collection, getFirestore } from "firebase/firestore";
 import { Toaster, toast } from "react-hot-toast";
 import "../styles/reset.css";
+import "../styles/global.css";
 
 initializeApp(firebaseConfig);
 

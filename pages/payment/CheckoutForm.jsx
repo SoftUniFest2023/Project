@@ -71,7 +71,7 @@ export default function CheckoutForm() {
             color: "purple",
           }}
         >
-          Плащане
+          Pay
         </h2>
         <PaymentElement
           id="payment-element"
@@ -93,6 +93,7 @@ export default function CheckoutForm() {
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
+            marginTop: "15px",
           }}
         >
           <span id="button-text">
@@ -100,7 +101,7 @@ export default function CheckoutForm() {
           </span>
         </button>
         {message && (
-          <div id="payment-message" style={{ marginTop: "20px" }}>
+          <div id="payment-message" style={{ marginTop: "20px", color: "red" }}>
             {message}
           </div>
         )}

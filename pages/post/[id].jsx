@@ -3,40 +3,57 @@ import { useRouter } from "next/router";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import HeaderStyles from "../../styles/header.module.css";
 import styles from "../../styles/productPage.module.css";
+import Link from "next/link";
 
-const ProductPage = ({ post }) => {
+export async function getServerSideProps({ params }) {
+  const postId = params.id;
+
+  // Initialize Firestore
+  const db = getFirestore();
+
+  // Fetch the post data from Firestore
+  const postDocRef = doc(db, "posts", postId);
+  const postDoc = await getDoc(postDocRef);
+  const postData = postDoc.data();
+
+  // Check if a post with the given ID exists
+  if (!postData) {
+    return {
+      notFound: true, // Return a 404 error if the post doesn't exist
+    };
+  }
+
+  // Convert the date string to a JavaScript Date object
+  const date = postData.date.toDate().toISOString();
+
+  return {
+    props: {
+      post: {
+        ...postData,
+        date,
+      },
+    },
+  };
+}
+
+// ProductPage.js
+// ...
+export default function ProductPage({ post }) {
   const [clientSecret, setClientSecret] = useState(null);
   const router = useRouter();
 
+  // When a user clicks the Buy button, generate a random orderId
   const handleBuyClick = async () => {
-    const id = window.location.pathname.split("/").pop();
     try {
-      const price = post ? post.price : null;
-      const response = await fetch(`/api/create-payment-intent?id=${id}`, {
-        method: "POST",
-        body: JSON.stringify(price),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const id = window.location.pathname.split("/").pop();
+      const price = post.price; // Ensure price is a number
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      if (data.clientSecret) {
-        router.push(`/payment?clientSecret=${data.clientSecret}`);
-      }
+      // Redirect to the dynamic payment page with postId and price as query parameters
+      router.push(`/payment/${id}?price=${price}`);
     } catch (error) {
-      console.error("Error while creating a payment intent:", error);
+      toast.error("Error while creating a payment intent:", error);
     }
   };
-
-  if (!post || !post.title) {
-    return <div>Error: Post not found</div>;
-  }
 
   return (
     <div className={styles.container}>
@@ -85,9 +102,9 @@ const ProductPage = ({ post }) => {
         </div>
       </header>
       <div className={styles.main}>
-        <button className={styles.backBTN} onClick={handleBuyClick}>
+        <Link className={styles.backBTN} href="../buy">
           <i className="fa-solid fa-angles-left" /> Back
-        </button>
+        </Link>
 
         <div className={styles.productInfo}>
           <div className={styles.imageSection}>
@@ -114,45 +131,4 @@ const ProductPage = ({ post }) => {
       </div>
     </div>
   );
-};
-
-export default ProductPage;
-
-export async function getServerSideProps({ params }) {
-  const postId = params.id;
-
-  // Initialize Firestore
-  const db = getFirestore();
-
-  try {
-    // Fetch the post data from Firestore
-    const postDocRef = doc(db, "posts", postId);
-    const postDoc = await getDoc(postDocRef);
-
-    if (!postDoc.exists()) {
-      console.error("Post not found");
-      return {
-        notFound: true,
-      };
-    }
-
-    const postData = postDoc.data();
-
-    // Convert the date string to a JavaScript Date object
-    const date = postData.date.toDate().toISOString();
-
-    return {
-      props: {
-        post: {
-          ...postData,
-          date,
-        },
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching post:", error);
-    return {
-      notFound: true,
-    };
-  }
 }
