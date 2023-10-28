@@ -8,8 +8,9 @@ import {
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useState, useEffect } from "react";
-import styles from "../styles/sell.module.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import HeaderStyles from "../styles/header.module.css";
+import styles from "../styles/sell.module.css";
 
 function CreatePost() {
   const [title, setTitle] = useState("");
@@ -120,64 +121,94 @@ function CreatePost() {
 
   return (
     <div className={styles.all}>
-      <div className={styles.newOffer}>
-        <h1 className={styles.formTitle}>Make a new sale</h1>
-        <form onSubmit={handleSubmit} className={styles.newOfferForm}>
-          <label className={styles.textShadow}>Title:</label>
-          <input
-            required
-            className={styles.inputArea}
-            placeholder="Product name"
-            type="text"
-            value={title}
-            onChange={handleTitleChange}
+      {/* Header */}
+      <header className={HeaderStyles.header}>
+        <a href="#">
+          <img
+            className={HeaderStyles.headerLogo}
+            src="../devt-mag-high-resolution-logo-transparent.png"
+            alt="Logo"
           />
-          <br />
+        </a>
 
-          <label className={styles.textShadow}>Content:</label>
-          <textarea
-            required
-            placeholder="Description"
-            className={styles.inputArea}
-            value={content}
-            onChange={handleContentChange}
-            rows="4"
-          />
-          <br />
+        <span className={HeaderStyles.pageDescriber}>Your Deals</span>
 
-          <label className={styles.textShadow}>Price in dollars:</label>
-          <input
-            placeholder="Price"
-            required
-            className={styles.inputArea}
-            type="number"
-            value={price}
-            onChange={handlePriceChange}
-            step="0.01" // Specify the step for floating-point numbers
-          />
-          <br />
+        <div className={HeaderStyles.headerNav}>
+          <a className={HeaderStyles.headerLink} href="./buy">
+            Buy
+          </a>
+          <a
+            className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
+            href="#"
+          >
+            Sell
+          </a>
+          <a className={HeaderStyles.headerLink} href="./account">
+            Profile
+          </a>
+        </div>
+      </header>
 
-          <label className={styles.textShadow}>Image:</label>
-          <input
-            required
-            className={styles.inputArea}
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-          <br />
+      <div className={styles.newOfferSection}>
+        <div className={styles.newOffer}>
+          <h1 className={styles.formTitle}>Make a new sale</h1>
+          <form onSubmit={handleSubmit} className={styles.newOfferForm}>
+            <label className={styles.textShadow}>Title:</label>
+            <input
+              required
+              className={styles.inputArea}
+              placeholder="Product name"
+              type="text"
+              value={title}
+              onChange={handleTitleChange}
+            />
+            <br />
 
-          <button type="submit">Upload</button>
-        </form>
+            <label className={styles.textShadow}>Content:</label>
+            <textarea
+              required
+              placeholder="Description"
+              className={styles.inputArea}
+              value={content}
+              onChange={handleContentChange}
+              rows="4"
+            />
+            <br />
+
+            <label className={styles.textShadow}>Price in dollars:</label>
+            <input
+              placeholder="Price"
+              required
+              className={styles.inputArea}
+              type="number"
+              value={price}
+              onChange={handlePriceChange}
+              step="0.01" // Specify the step for floating-point numbers
+            />
+            <br />
+
+            <label className={styles.textShadow}>Image:</label>
+            <input
+              required
+              className={styles.inputArea}
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
+            <br />
+
+            <button type="submit">Upload</button>
+          </form>
+        </div>
+
+        <p className={styles.formDesc}>
+          Welcome to our Product Offer Submission Form, where you can
+          effortlessly share your exciting product offerings with the community.
+          Whether you're a supplier, manufacturer, or just have an exceptional
+          product to propose, this user-friendly form makes it easy for you to
+          showcase your offerings and connect with potential buyers.
+        </p>
       </div>
-
-      <p className={styles.formDesc}>
-        Welcome to our Product Offer Submission Form, where you can effortlessly
-        share your exciting product offerings with the community. Whether you're
-        a supplier, manufacturer, or just have an exceptional product to
-        propose, this user-friendly form makes it easy for you to showcase your
-        offerings and connect with potential buyers.
-      </p>
     </div>
   );
 }

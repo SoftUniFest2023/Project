@@ -5,7 +5,6 @@ import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../lib/firebase";
 import { getDoc, doc, collection, getFirestore } from "firebase/firestore";
 import "../styles/reset.css";
-import "../styles/stripe.css";
 
 initializeApp(firebaseConfig);
 

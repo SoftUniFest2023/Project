@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "../lib/firebase";
 import PostList from "../components/buyList";
+import HeaderStyles from "../styles/header.module.css";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -49,7 +50,34 @@ const Home = ({ posts }) => {
   }, [sortBy]);
 
   return (
-    <div>
+    <div className={HeaderStyles.html}>
+      {/* Header */}
+      <header className={HeaderStyles.header}>
+        <a href="#">
+          <img
+            className={HeaderStyles.headerLogo}
+            src="../devt-mag-high-resolution-logo-transparent.png"
+            alt="Logo"
+          />
+        </a>
+
+        <span className={HeaderStyles.pageDescriber}>Available Products</span>
+
+        <div className={HeaderStyles.headerNav}>
+          <a
+            className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
+            href="#"
+          >
+            Buy
+          </a>
+          <a className={HeaderStyles.headerLink} href="./sell">
+            Sell
+          </a>
+          <a className={HeaderStyles.headerLink} href="./account">
+            Profile
+          </a>
+        </div>
+      </header>
       <h1>All Posts</h1>
       <label>Sort By:</label>
       <select value={sortBy} onChange={handleSortChange}>
