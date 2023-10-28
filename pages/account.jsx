@@ -161,19 +161,38 @@ const Profile = () => {
               Delete Profile
             </button>
           </div>
-          <h2>Your Posts</h2>
-          <ul>
-            {userPosts.map((post) => (
-              <li key={post.id} className={styles.post}>
-                <Link href={`/post/${post.id}`}>
-                  <p className={styles.link}>
-                    <h3>{post.title}</h3>
-                  </p>
-                </Link>
-                <p>{post.content}</p>
-              </li>
-            ))}
-          </ul>
+          <div className={styles.userPosts}>
+            <h2 className={styles.userPostsName}>Your Posts</h2>
+            <ol type="I">
+              {userPosts.map((post) => (
+                <li key={post.id} className={styles.post}>
+                  <div>
+                    <Link className={styles.link} href={`/post/${post.id}`}>
+                      <p className={styles.link}>
+                        <h3 className={styles.desc}>
+                          <span className={styles.descTitle}>
+                            Product Name:{" "}
+                          </span>
+                          <span className={styles.descContent}>
+                            {post.title}
+                          </span>
+                        </h3>
+                      </p>
+                    </Link>
+                    <p className={styles.desc}>
+                      <span className={styles.descTitle}>Description: </span>
+                      <span className={styles.descContent}>{post.content}</span>
+                    </p>
+                  </div>
+                  <img
+                    className={styles.descImg}
+                    src={post.imageUrl}
+                    alt="post IMG"
+                  />
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       ) : (
         <p>Please sign in to view your profile.</p>
