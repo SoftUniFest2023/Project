@@ -1,5 +1,4 @@
 import styles from "../styles/error.module.css";
-import { Toaster, toast } from "react-hot-toast";
 
 export default function Error404() {
   return (

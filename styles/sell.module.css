@@ -3,6 +3,8 @@
 
 .all {
   min-height: 100vh;
+  display: flex;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0.938);
   font-family: "Poppins";
   color: blueviolet;
@@ -12,11 +14,6 @@
 .formTitle {
   text-align: center;
   margin-bottom: 20px;
-}
-
-.newOfferSection {
-  display: flex;
-  align-items: center;
 }
 
 .newOfferForm {

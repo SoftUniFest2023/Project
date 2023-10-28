@@ -50,16 +50,16 @@ export default function ConfirmEmail() {
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.emailVerified) {
-        setError(
-          "Email confirmed successfully. Redirecting to account page..."
+        toast.success(
+          "Email confirmed successfully. Redirecting to account page"
         );
         setTimeout(() => {
           router.push("/account");
         }, 3000);
       } else if (user && !user.emailVerified) {
-        setError("Email verification is pending. Please check your email.");
+        toast("Email verification is pending. Please check your email.");
       } else {
-        setError("User not found. Please sign up or log in.");
+        toast.error("User not found. Please sign up or log in.");
       }
     });
 
@@ -72,6 +72,7 @@ export default function ConfirmEmail() {
       setEmailSent(true);
     } catch (error) {
       console.error("Error sending verification email:", error);
+      toast.error("Error sending verification email");
     }
   };
 

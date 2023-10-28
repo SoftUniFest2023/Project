@@ -24,6 +24,7 @@ import { getAuth } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../lib/firebase";
 import styles from "../styles/register.module.css";
+import toast from "react-hot-toast";
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
@@ -69,7 +70,7 @@ function LoginForm() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      console.log("Login successful");
+      toast.success("succefuly signed in");
       setError("");
     } catch (error) {
       setError(error.message);
@@ -96,7 +97,7 @@ function LoginForm() {
         email,
         password
       );
-      console.log("Signup successful");
+      toast.log("Signup successful");
 
       // Set the user's chosen role during sign-up
       const userDocRef = doc(collection(db, "users"), userCredential.user.uid);
@@ -157,6 +158,7 @@ function LoginForm() {
         await setDoc(userDocRef, userData);
       }
 
+      toast.success("Sign in succesfull");
       setEmail("");
       setPassword("");
       setError("");

@@ -8,9 +8,9 @@ import {
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useState, useEffect } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import HeaderStyles from "../styles/header.module.css";
 import styles from "../styles/sell.module.css";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import toast from "react-hot-toast";
 
 function CreatePost() {
   const [title, setTitle] = useState("");
@@ -108,7 +108,7 @@ function CreatePost() {
 
       await addDoc(postRef, post);
 
-      alert("Post created successfully");
+      toast.success("Post created successfully");
       // Reset form fields
       setTitle("");
       setContent("");
@@ -121,117 +121,64 @@ function CreatePost() {
 
   return (
     <div className={styles.all}>
-      {/* Header */}
-      <header className={HeaderStyles.header}>
-        <a href="#">
-          <img
-            className={HeaderStyles.headerLogo}
-            src="../devt-mag-high-resolution-logo-transparent.png"
-            alt="Logo"
+      <div className={styles.newOffer}>
+        <h1 className={styles.formTitle}>Make a new sale</h1>
+        <form onSubmit={handleSubmit} className={styles.newOfferForm}>
+          <label className={styles.textShadow}>Title:</label>
+          <input
+            required
+            className={styles.inputArea}
+            placeholder="Product name"
+            type="text"
+            value={title}
+            onChange={handleTitleChange}
           />
-        </a>
+          <br />
 
-        <div className={HeaderStyles.barsSection}>
-          <span className={HeaderStyles.bars}>
-            <i className="fa-solid fa-bars" />
-          </span>
-          <div className={HeaderStyles.dropMenu}>
-            <span className={HeaderStyles.pageDescriberLow}>Your Deals</span>
-            <div className={HeaderStyles.headerNavLow}>
-              <a className={HeaderStyles.headerLink} href="./buy">
-                Buy
-              </a>
-              <a
-                className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
-                href="#"
-              >
-                Sell
-              </a>
-              <a className={HeaderStyles.headerLink} href="./account">
-                Profile
-              </a>
-            </div>
-          </div>
-        </div>
+          <label className={styles.textShadow}>Content:</label>
+          <textarea
+            required
+            placeholder="Description"
+            className={styles.inputArea}
+            value={content}
+            onChange={handleContentChange}
+            rows="4"
+          />
+          <br />
 
-        <span className={HeaderStyles.pageDescriberHigh}>Your Deals</span>
+          <label className={styles.textShadow}>Price in dollars:</label>
+          <input
+            placeholder="Price"
+            required
+            className={styles.inputArea}
+            type="number"
+            value={price}
+            onChange={handlePriceChange}
+            step="0.01" // Specify the step for floating-point numbers
+          />
+          <br />
 
-        <div className={HeaderStyles.headerNavHigh}>
-          <a className={HeaderStyles.headerLink} href="./buy">
-            Buy
-          </a>
-          <a
-            className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
-            href="#"
-          >
-            Sell
-          </a>
-          <a className={HeaderStyles.headerLink} href="./account">
-            Profile
-          </a>
-        </div>
-      </header>
+          <label className={styles.textShadow}>Image:</label>
+          <input
+            required
+            className={styles.inputArea}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          <br />
 
-      <div className={styles.newOfferSection}>
-        <div className={styles.newOffer}>
-          <h1 className={styles.formTitle}>Make a new sale</h1>
-          <form onSubmit={handleSubmit} className={styles.newOfferForm}>
-            <label className={styles.textShadow}>Title:</label>
-            <input
-              required
-              className={styles.inputArea}
-              placeholder="Product name"
-              type="text"
-              value={title}
-              onChange={handleTitleChange}
-            />
-            <br />
-
-            <label className={styles.textShadow}>Content:</label>
-            <textarea
-              required
-              placeholder="Description"
-              className={styles.inputArea}
-              value={content}
-              onChange={handleContentChange}
-              rows="4"
-            />
-            <br />
-
-            <label className={styles.textShadow}>Price in dollars:</label>
-            <input
-              placeholder="Price"
-              required
-              className={styles.inputArea}
-              type="number"
-              value={price}
-              onChange={handlePriceChange}
-              step="0.01" // Specify the step for floating-point numbers
-            />
-            <br />
-
-            <label className={styles.textShadow}>Image:</label>
-            <input
-              required
-              className={styles.inputArea}
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-            <br />
-
-            <button type="submit">Upload</button>
-          </form>
-        </div>
-
-        <p className={styles.formDesc}>
-          Welcome to our Product Offer Submission Form, where you can
-          effortlessly share your exciting product offerings with the community.
-          Whether you're a supplier, manufacturer, or just have an exceptional
-          product to propose, this user-friendly form makes it easy for you to
-          showcase your offerings and connect with potential buyers.
-        </p>
+          <button type="submit">Upload</button>
+        </form>
       </div>
+
+      <p className={styles.formDesc}>
+        Welcome to our Product Offer Submission Form, where you can effortlessly
+        share your exciting product offerings with the community. Whether you're
+        a supplier, manufacturer, or just have an exceptional product to
+        propose, this user-friendly form makes it easy for you to showcase your
+        offerings and connect with potential buyers.
+      </p>
     </div>
   );
 }

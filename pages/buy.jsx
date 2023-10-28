@@ -4,8 +4,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { firebaseConfig } from "../lib/firebase";
 import PostList from "../components/buyList";
-import HeaderStyles from "../styles/header.module.css";
-import styles from "../styles/buy.module.css";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -51,76 +49,17 @@ const Home = ({ posts }) => {
   }, [sortBy]);
 
   return (
-    <div className={HeaderStyles.html}>
-      {/* Header */}
-      <header className={HeaderStyles.header}>
-        <a href="#">
-          <img
-            className={HeaderStyles.headerLogo}
-            src="../devt-mag-high-resolution-logo-transparent.png"
-            alt="Logo"
-          />
-        </a>
-
-        <div className={HeaderStyles.barsSection}>
-          <span className={HeaderStyles.bars}>
-            <i className="fa-solid fa-bars" />
-          </span>
-          <div className={HeaderStyles.dropMenu}>
-            <span className={HeaderStyles.pageDescriberLow}>
-              Available Products
-            </span>
-            <div className={HeaderStyles.headerNavLow}>
-              <a
-                className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
-                href="#"
-              >
-                Buy
-              </a>
-              <a className={HeaderStyles.headerLink} href="./sell">
-                Sell
-              </a>
-              <a className={HeaderStyles.headerLink} href="./account">
-                Profile
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <span className={HeaderStyles.pageDescriberHigh}>
-          Available Products
-        </span>
-
-        <div className={HeaderStyles.headerNavHigh}>
-          <a
-            className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
-            href="#"
-          >
-            Buy
-          </a>
-          <a className={HeaderStyles.headerLink} href="./sell">
-            Sell
-          </a>
-          <a className={HeaderStyles.headerLink} href="./account">
-            Profile
-          </a>
-        </div>
-      </header>
-      <div className={styles.main}>
-        <h1 className={styles.title}>All Posts</h1>
-        <div className={styles.filter}>
-          <label className={styles.label}>Sort By:</label>
-          <select value={sortBy} onChange={handleSortChange}>
-            <option value="titleAsc">Title (A-Z)</option>
-            <option value="titleDesc">Title (Z-A)</option>
-            <option value="priceAsc">Price (Low to High)</option>
-            <option value="priceDesc">Price (High to Low)</option>
-            <option value="dateAsc">Date (Old to New)</option>
-            <option value="dateDesc">Date (New to Old)</option>
-          </select>
-        </div>
-      </div>
-
+    <div>
+      <h1>All Posts</h1>
+      <label>Sort By:</label>
+      <select value={sortBy} onChange={handleSortChange}>
+        <option value="titleAsc">Title (A-Z)</option>
+        <option value="titleDesc">Title (Z-A)</option>
+        <option value="priceAsc">Price (Low to High)</option>
+        <option value="priceDesc">Price (High to Low)</option>
+        <option value="dateAsc">Date (Old to New)</option>
+        <option value="dateDesc">Date (New to Old)</option>
+      </select>
       <PostList posts={sortedPosts} />
     </div>
   );
