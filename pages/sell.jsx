@@ -7,15 +7,34 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { useState } from "react";
-import HeaderStyles from "../styles/header.module.css";
+import { useState, useEffect } from "react";
 import styles from "../styles/sell.module.css";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function CreatePost() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState(null);
+  const [user, setUser] = useState(null); // To store user information
+
+  const auth = getAuth();
+  const db = getFirestore();
+  const storage = getStorage();
+
+  useEffect(() => {
+    // Listen for changes in user authentication state
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
+    });
+
+    // Clean up the listener when the component unmounts
+    return () => unsubscribe();
+  }, [auth]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -46,9 +65,10 @@ function CreatePost() {
       return;
     }
 
-    // Initialize Firestore and Storage
-    const db = getFirestore();
-    const storage = getStorage();
+    if (!user) {
+      alert("Please sign in to create a post.");
+      return;
+    }
 
     try {
       // Check if a post with the same title and content already exists
@@ -75,13 +95,14 @@ function CreatePost() {
       // 3. Get the current date and time
       const currentDate = new Date();
 
-      // 4. Save the post in the Firestore database with the date field
+      // 4. Save the post in the Firestore database with the date field and username
       const post = {
         title: title,
         content: content,
         price: price,
         imageUrl: imageUrl,
-        date: currentDate, // Add the date field
+        date: currentDate,
+        username: user.displayName, // Include the username
       };
 
       await addDoc(postRef, post);
@@ -99,94 +120,64 @@ function CreatePost() {
 
   return (
     <div className={styles.all}>
-      {/* Header */}
-      <header className={HeaderStyles.header}>
-        <a href="#">
-          <img
-            className={HeaderStyles.headerLogo}
-            src="../devt-mag-high-resolution-logo-transparent.png"
-            alt="Logo"
+      <div className={styles.newOffer}>
+        <h1 className={styles.formTitle}>Make a new sale</h1>
+        <form onSubmit={handleSubmit} className={styles.newOfferForm}>
+          <label className={styles.textShadow}>Title:</label>
+          <input
+            required
+            className={styles.inputArea}
+            placeholder="Product name"
+            type="text"
+            value={title}
+            onChange={handleTitleChange}
           />
-        </a>
+          <br />
 
-        <span className={HeaderStyles.pageDescriber}>Your Deals</span>
+          <label className={styles.textShadow}>Content:</label>
+          <textarea
+            required
+            placeholder="Description"
+            className={styles.inputArea}
+            value={content}
+            onChange={handleContentChange}
+            rows="4"
+          />
+          <br />
 
-        <div className={HeaderStyles.headerNav}>
-          <a className={HeaderStyles.headerLink} href="./buy">
-            Buy
-          </a>
-          <a
-            className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
-            href="#"
-          >
-            Sell
-          </a>
-          <a className={HeaderStyles.headerLink} href="./account">
-            Profile
-          </a>
-        </div>
-      </header>
+          <label className={styles.textShadow}>Price in dollars:</label>
+          <input
+            placeholder="Price"
+            required
+            className={styles.inputArea}
+            type="number"
+            value={price}
+            onChange={handlePriceChange}
+            step="0.01" // Specify the step for floating-point numbers
+          />
+          <br />
 
-      <div className={styles.newOfferSection}>
-        <div className={styles.newOffer}>
-          <h1 className={styles.formTitle}>Make a new sale</h1>
-          <form onSubmit={handleSubmit} className={styles.newOfferForm}>
-            <label className={styles.textShadow}>Title:</label>
-            <input
-              required
-              className={styles.inputArea}
-              placeholder="Product name"
-              type="text"
-              value={title}
-              onChange={handleTitleChange}
-            />
-            <br />
+          <label className={styles.textShadow}>Image:</label>
+          <input
+            required
+            className={styles.inputArea}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          <br />
 
-            <label className={styles.textShadow}>Content:</label>
-            <textarea
-              required
-              placeholder="Description"
-              className={styles.inputArea}
-              value={content}
-              onChange={handleContentChange}
-              rows="4"
-            />
-            <br />
-
-            <label className={styles.textShadow}>Price in dollars:</label>
-            <input
-              placeholder="Price"
-              required
-              className={styles.inputArea}
-              type="number"
-              value={price}
-              onChange={handlePriceChange}
-              step="0.01" // Specify the step for floating-point numbers
-            />
-            <br />
-
-            <label className={styles.textShadow}>Image:</label>
-            <input
-              required
-              className={styles.inputArea}
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-            <br />
-
-            <button type="submit">Upload</button>
-          </form>
-        </div>
-
-        <p className={styles.formDesc}>
-          Welcome to our Product Offer Submission Form, where you can
-          effortlessly share your exciting product offerings with the community.
-          Whether you're a supplier, manufacturer, or just have an exceptional
-          product to propose, this user-friendly form makes it easy for you to
-          showcase your offerings and connect with potential buyers.
-        </p>
+          <button type="submit">Upload</button>
+        </form>
       </div>
+
+      <p className={styles.formDesc}>
+        Welcome to our Product Offer Submission Form, where you can effortlessly
+        share your exciting product offerings with the community. Whether you're
+        a supplier, manufacturer, or just have an exceptional product to
+        propose, this user-friendly form makes it easy for you to showcase your
+        offerings and connect with potential buyers.
+      </p>
     </div>
   );
 }

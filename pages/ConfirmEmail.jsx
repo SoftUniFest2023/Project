@@ -50,9 +50,11 @@ export default function ConfirmEmail() {
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.emailVerified) {
-        setError("Email confirmed successfully. Redirecting to login page...");
+        setError(
+          "Email confirmed successfully. Redirecting to account page..."
+        );
         setTimeout(() => {
-          router.push("/register");
+          router.push("/account");
         }, 3000);
       } else if (user && !user.emailVerified) {
         setError("Email verification is pending. Please check your email.");

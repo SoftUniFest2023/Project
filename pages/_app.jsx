@@ -5,6 +5,7 @@ import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../lib/firebase";
 import { getDoc, doc, collection, getFirestore } from "firebase/firestore";
 import "../styles/reset.css";
+import "../styles/stripe.css";
 
 initializeApp(firebaseConfig);
 
@@ -64,13 +65,16 @@ export default function MyApp({ Component, pageProps }) {
 
   if (
     !user &&
-    router.pathname !== "/login" &&
+    router.pathname !== "/register" &&
     router.pathname !== "/" &&
-    router.pathname !== "/ConfirmEmail" &&
-    router.pathname == "/Languages/" &&
-    !router.pathname.startsWith("/Languages/")
+    router.pathname !== "/ConfirmEmail"
   ) {
     // User is not signed in and not on the login page or the "/" page, redirect to login
+    router.push("/");
+    return null;
+  }
+
+  if (user && router.pathname === "/register") {
     router.push("/");
     return null;
   }

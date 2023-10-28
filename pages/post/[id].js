@@ -32,7 +32,6 @@ export async function getServerSideProps({ params }) {
   };
 }
 
-// pages/[id].js
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -41,22 +40,24 @@ const ProductPage = ({ post }) => {
   const router = useRouter();
 
   const handleBuyClick = async () => {
+    const id = window.location.pathname.split("/").pop();
     try {
-      // Fetch the price from Firebase (Use the same code to fetch data from Firebase)
-      const price = post.price; // Assuming you've already fetched the price
-      console.log();
-      // Make an API call to generate a Stripe Payment Intent
-      const response = await fetch("/api/create-payment-intent", {
+      const price = post.price;
+      const response = await fetch(`/api/create-payment-intent?id=${id}`, {
         method: "POST",
-        body: JSON.stringify({ price }),
+        body: JSON.stringify(price),
         headers: {
           "Content-Type": "application/json",
         },
       });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
       const data = await response.json();
 
       if (data.clientSecret) {
-        // Redirect to the payment page with the client secret
         router.push(`/payment?clientSecret=${data.clientSecret}`);
       }
     } catch (error) {

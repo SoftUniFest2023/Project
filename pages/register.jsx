@@ -132,7 +132,6 @@ function LoginForm() {
 
       if (userSnapshot.exists()) {
         // User already exists in the database, so treat them as an existing user
-        // You can add any additional logic here for existing users
       } else {
         // User does not exist in the database, so treat them as a new user
         const selectedRole = prompt("Choose your role (customer or seller):");
@@ -161,86 +160,9 @@ function LoginForm() {
       setEmail("");
       setPassword("");
       setError("");
+      router.push("/account");
     } catch (error) {
       setError(error.message);
-    }
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-      console.log("Sign out successful");
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  // Function to delete the user's profile and username document
-  const deleteUserProfile = async (user, router) => {
-    const auth = getAuth();
-    const firestore = getFirestore();
-
-    try {
-      // Check the user's sign-in provider
-      const providerId = user.providerData[0].providerId;
-      let credential;
-
-      if (providerId === "password") {
-        // If the user is signed in with email/password, prompt for password
-        const password = prompt("Please enter your password");
-        if (!password) {
-          console.log("Password not provided. Profile not deleted.");
-          return;
-        }
-        credential = EmailAuthProvider.credential(user.email, password);
-      } else if (providerId === "google.com") {
-        // If the user is signed in with Google, reauthenticate with Google sign-in provider
-        const provider = new GoogleAuthProvider();
-        await reauthenticateWithPopup(auth.currentUser, provider);
-      } else {
-        // Unsupported sign-in provider, show error or handle as needed
-        console.error("Unsupported sign-in provider. Profile not deleted.");
-        return;
-      }
-
-      // If we have a credential, reauthenticate the user
-      if (credential) {
-        await reauthenticateWithCredential(auth.currentUser, credential);
-      }
-
-      // Delete the user's profile document
-      await deleteDoc(doc(firestore, "users", user.uid));
-
-      // Delete the user from Firebase Authentication
-      await auth.currentUser.delete();
-
-      // Redirect the user to the home page or another appropriate page
-      router.push("/");
-    } catch (error) {
-      console.error("Error deleting user profile:", error);
-    }
-  };
-
-  const handleDeleteProfile = async () => {
-    const auth = getAuth();
-    const currentUser = auth.currentUser;
-
-    if (currentUser && currentUser.emailVerified) {
-      try {
-        await auth.currentUser.reload();
-        const refreshedUser = auth.currentUser;
-        if (refreshedUser.emailVerified) {
-          deleteUserProfile(refreshedUser, router);
-        } else {
-          console.error(
-            "User email verification state expired. Please sign in again."
-          );
-        }
-      } catch (error) {
-        console.error("Error refreshing user authentication state:", error);
-      }
-    } else {
-      console.error("User authentication state expired. Please sign in again.");
     }
   };
 
@@ -410,15 +332,6 @@ function LoginForm() {
       </div>
     );
   }
-
-  return (
-    <div>
-      <h2>Welcome, {username}</h2>
-      <button onClick={handleSignOut}>Sign Out</button>
-      <button onClick={handleDeleteProfile}>Delete account</button>
-      {error && <p>{error}</p>}
-    </div>
-  );
 }
 
 export default LoginForm;
