@@ -21,7 +21,6 @@ import { useRouter } from "next/router";
 import { signOut, reauthenticateWithCredential } from "firebase/auth";
 import HeaderStyles from "../styles/header.module.css";
 import styles from "../styles/account.module.css";
-
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [userPosts, setUserPosts] = useState([]);

@@ -1,3 +1,4 @@
+import { Toaster, toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -82,6 +83,7 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <>
       <Component {...pageProps} user={user} username={username} />
+      <Toaster />
     </>
   );
 }
