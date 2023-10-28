@@ -61,9 +61,36 @@ const Home = ({ posts }) => {
           />
         </a>
 
-        <span className={HeaderStyles.pageDescriber}>Available Products</span>
+        <div className={HeaderStyles.barsSection}>
+          <span className={HeaderStyles.bars}>
+            <i className="fa-solid fa-bars" />
+          </span>
+          <div className={HeaderStyles.dropMenu}>
+            <span className={HeaderStyles.pageDescriberLow}>
+              Available Products
+            </span>
+            <div className={HeaderStyles.headerNavLow}>
+              <a
+                className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
+                href="#"
+              >
+                Buy
+              </a>
+              <a className={HeaderStyles.headerLink} href="./sell">
+                Sell
+              </a>
+              <a className={HeaderStyles.headerLink} href="./account">
+                Profile
+              </a>
+            </div>
+          </div>
+        </div>
 
-        <div className={HeaderStyles.headerNav}>
+        <span className={HeaderStyles.pageDescriberHigh}>
+          Available Products
+        </span>
+
+        <div className={HeaderStyles.headerNavHigh}>
           <a
             className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
             href="#"

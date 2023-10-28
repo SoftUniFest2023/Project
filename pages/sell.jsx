@@ -131,9 +131,32 @@ function CreatePost() {
           />
         </a>
 
-        <span className={HeaderStyles.pageDescriber}>Your Deals</span>
+        <div className={HeaderStyles.barsSection}>
+          <span className={HeaderStyles.bars}>
+            <i className="fa-solid fa-bars" />
+          </span>
+          <div className={HeaderStyles.dropMenu}>
+            <span className={HeaderStyles.pageDescriberLow}>Your Deals</span>
+            <div className={HeaderStyles.headerNavLow}>
+              <a className={HeaderStyles.headerLink} href="./buy">
+                Buy
+              </a>
+              <a
+                className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
+                href="#"
+              >
+                Sell
+              </a>
+              <a className={HeaderStyles.headerLink} href="./account">
+                Profile
+              </a>
+            </div>
+          </div>
+        </div>
 
-        <div className={HeaderStyles.headerNav}>
+        <span className={HeaderStyles.pageDescriberHigh}>Your Deals</span>
+
+        <div className={HeaderStyles.headerNavHigh}>
           <a className={HeaderStyles.headerLink} href="./buy">
             Buy
           </a>

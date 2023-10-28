@@ -50,9 +50,29 @@ const ProductPage = ({ post }) => {
           />
         </a>
 
-        <span className={HeaderStyles.pageDescriber}>{post.title}</span>
+        <div className={HeaderStyles.barsSection}>
+          <span className={HeaderStyles.bars}>
+            <i className="fa-solid fa-bars" />
+          </span>
+          <div className={HeaderStyles.dropMenu}>
+            <span className={HeaderStyles.pageDescriberLow}>{post.title}</span>
+            <div className={HeaderStyles.headerNavLow}>
+              <a className={HeaderStyles.headerLink} href="../buy">
+                Buy
+              </a>
+              <a className={HeaderStyles.headerLink} href="../sell">
+                Sell
+              </a>
+              <a className={HeaderStyles.headerLink} href="../account">
+                Profile
+              </a>
+            </div>
+          </div>
+        </div>
 
-        <div className={HeaderStyles.headerNav}>
+        <span className={HeaderStyles.pageDescriberHigh}>{post.title}</span>
+
+        <div className={HeaderStyles.headerNavHigh}>
           <a className={HeaderStyles.headerLink} href="../buy">
             Buy
           </a>
