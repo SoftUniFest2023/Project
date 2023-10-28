@@ -73,8 +73,8 @@ const Home = ({ posts }) => {
           <a className={HeaderStyles.headerLink} href="./sell">
             Sell
           </a>
-          <a className={HeaderStyles.headerLink} href="">
-            Sign out
+          <a className={HeaderStyles.headerLink} href="./account">
+            Profile
           </a>
         </div>
       </header>
