@@ -16,10 +16,11 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import Link from "next/link"; // Import the Link component from Next.js
+import Link from "next/link";
 import { useRouter } from "next/router";
-
 import { signOut, reauthenticateWithCredential } from "firebase/auth";
+import HeaderStyles from "../styles/header.module.css";
+import styles from "../styles/account.module.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -29,22 +30,15 @@ const Profile = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Check if the user is authenticated
     onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        // User is signed in
         setUser(currentUser);
-
-        // Set the username to the email if no username is available
         const username = currentUser.displayName || currentUser.email;
-
-        // Query user's posts by username
         const userPostsQuery = query(
           collection(db, "posts"),
           where("username", "==", username)
         );
         const querySnapshot = await getDocs(userPostsQuery);
-
         if (!querySnapshot.empty) {
           const posts = querySnapshot.docs.map((doc) => ({
             id: doc.id,
@@ -53,7 +47,6 @@ const Profile = () => {
           setUserPosts(posts);
         }
       } else {
-        // User is not signed in
         setUser(null);
         setUserPosts([]);
       }
@@ -69,18 +62,15 @@ const Profile = () => {
     }
   };
 
-  // Function to delete the user's profile and username document
   const deleteUserProfile = async (user, router) => {
     const auth = getAuth();
     const firestore = getFirestore();
 
     try {
-      // Check the user's sign-in provider
       const providerId = user.providerData[0].providerId;
       let credential;
 
       if (providerId === "password") {
-        // If the user is signed in with email/password, prompt for password
         const password = prompt("Please enter your password");
         if (!password) {
           console.log("Password not provided. Profile not deleted.");
@@ -88,27 +78,19 @@ const Profile = () => {
         }
         credential = EmailAuthProvider.credential(user.email, password);
       } else if (providerId === "google.com") {
-        // If the user is signed in with Google, reauthenticate with Google sign-in provider
         const provider = new GoogleAuthProvider();
         await reauthenticateWithPopup(auth.currentUser, provider);
       } else {
-        // Unsupported sign-in provider, show error or handle as needed
         console.error("Unsupported sign-in provider. Profile not deleted.");
         return;
       }
 
-      // If we have a credential, reauthenticate the user
       if (credential) {
         await reauthenticateWithCredential(auth.currentUser, credential);
       }
 
-      // Delete the user's profile document
       await deleteDoc(doc(firestore, "users", user.uid));
-
-      // Delete the user from Firebase Authentication
       await auth.currentUser.delete();
-
-      // Redirect the user to the home page or another appropriate page
       router.push("/");
     } catch (error) {
       console.error("Error deleting user profile:", error);
@@ -139,18 +121,52 @@ const Profile = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
+      {/* Header */}
+      <header className={HeaderStyles.header}>
+        <a href="#">
+          <img
+            className={HeaderStyles.headerLogo}
+            src="../devt-mag-high-resolution-logo-transparent.png"
+            alt="Logo"
+          />
+        </a>
+
+        <span className={HeaderStyles.pageDescriber}>Your Account</span>
+
+        <div className={HeaderStyles.headerNav}>
+          <a className={HeaderStyles.headerLink} href="./buy">
+            Buy
+          </a>
+          <a className={HeaderStyles.headerLink} href="./sell">
+            Sell
+          </a>
+          <a
+            className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
+            href="#"
+          >
+            Profile
+          </a>
+        </div>
+      </header>
+
       {user ? (
-        <div>
-          <h1>Welcome, {user.username || user.email || user.uid}</h1>
-          <button onClick={handleSignOut}>Sign Out</button>
-          <button onClick={handleDeleteProfile}>Delete Profile</button>
+        <div className={styles.userInfo}>
+          <h1>Welcome, {user.displayName || user.email || user.uid}</h1>
+          <div>
+            <button className={styles.button} onClick={handleSignOut}>
+              Sign Out
+            </button>
+            <button className={styles.button} onClick={handleDeleteProfile}>
+              Delete Profile
+            </button>
+          </div>
           <h2>Your Posts</h2>
           <ul>
             {userPosts.map((post) => (
-              <li key={post.id}>
+              <li key={post.id} className={styles.post}>
                 <Link href={`/post/${post.id}`}>
-                  <p>
+                  <p className={styles.link}>
                     <h3>{post.title}</h3>
                   </p>
                 </Link>

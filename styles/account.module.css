@@ -1,0 +1,42 @@
+.container {
+  margin: auto;
+  background-color: #4b0082;
+  color: white;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  background-image: linear-gradient(to bottom, #4b0082, #800080);
+}
+
+.button {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: #9400d3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  transition: all 200ms linear;
+}
+
+.button:hover {
+  background-color: #9400d3;
+  color: aliceblue;
+}
+
+.link {
+  text-decoration: none;
+  color: #ba55d3;
+}
+
+.post {
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #800080;
+  border-radius: 5px;
+}
+
+.userInfo {
+  margin-top: 50px;
+}
