@@ -7,8 +7,7 @@ import PostList from "../components/buyList";
 import HeaderStyles from "../styles/header.module.css";
 import styles from "../styles/buy.module.css";
 import FooterStyles from "../styles/footer.module.css";
-
-const app = initializeApp(firebaseConfig);
+import { app } from "../lib/firebase";
 const db = getFirestore(app);
 
 const Home = ({ posts }) => {
