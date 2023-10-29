@@ -13,6 +13,7 @@ import styles from "../styles/sell.module.css";
 import FooterStyles from "../styles/footer.module.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import toast from "react-hot-toast";
+import { app } from "../lib/firebase";
 
 function CreatePost() {
   const [title, setTitle] = useState("");
@@ -21,9 +22,9 @@ function CreatePost() {
   const [image, setImage] = useState(null);
   const [user, setUser] = useState(null); // To store user information
 
-  const auth = getAuth();
-  const db = getFirestore();
-  const storage = getStorage();
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
 
   useEffect(() => {
     // Listen for changes in user authentication state
