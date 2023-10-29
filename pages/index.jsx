@@ -89,9 +89,6 @@ export default function MyApp() {
           <a className={HeaderStyles.headerLink} href="./sell">
             Sell
           </a>
-          <a className={HeaderStyles.headerLink} href="./zanas">
-            About
-          </a>
           <a className={HeaderStyles.headerLink} href="./account">
             Profile
           </a>

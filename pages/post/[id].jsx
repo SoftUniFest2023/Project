@@ -106,6 +106,9 @@ export default function ProductPage({ post }) {
           <div className={HeaderStyles.dropMenu}>
             <span className={HeaderStyles.pageDescriberLow}>{post.title}</span>
             <div className={HeaderStyles.headerNavLow}>
+              <a className={HeaderStyles.headerLink} href="../">
+                Home
+              </a>
               <a className={HeaderStyles.headerLink} href="../buy">
                 Buy
               </a>
@@ -122,6 +125,9 @@ export default function ProductPage({ post }) {
         <span className={HeaderStyles.pageDescriberHigh}>{post.title}</span>
 
         <div className={HeaderStyles.headerNavHigh}>
+          <a className={HeaderStyles.headerLink} href="../">
+            Home
+          </a>
           <a className={HeaderStyles.headerLink} href="../buy">
             Buy
           </a>
