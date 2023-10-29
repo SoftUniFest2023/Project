@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   getAuth,
   onAuthStateChanged,
+  signOut,
   deleteUser,
   reauthenticateWithPopup,
   GoogleAuthProvider,
@@ -16,33 +17,24 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-import Link from "next/link"; // Import the Link component from Next.js
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { app } from "../lib/firebase";
-import { signOut, reauthenticateWithCredential } from "firebase/auth";
 import toast from "react-hot-toast";
 import styles from "../styles/account.module.css";
 import HeaderStyles from "../styles/header.module.css";
-import FooterStyles from "../styles/footer.module.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const auth = getAuth(app);
   const db = getFirestore(app);
-  const router = useRouter(app);
 
   useEffect(() => {
-    // Check if the user is authenticated
     onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        // User is signed in
         setUser(currentUser);
-
-        // Set the username to the email if no username is available
         const username = currentUser.displayName || currentUser.email;
 
-        // Query user's posts by username
         const userPostsQuery = query(
           collection(db, "posts"),
           where("username", "==", username)
@@ -57,7 +49,6 @@ const Profile = () => {
           setUserPosts(posts);
         }
       } else {
-        // User is not signed in
         setUser(null);
         setUserPosts([]);
       }
@@ -66,10 +57,11 @@ const Profile = () => {
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth).then(toast.success("Sign out successful"));
+      await signOut(auth);
+      toast.success("Sign out successful");
     } catch (error) {
-      console.log(error.message);
-      toast.error("error");
+      console.error(error.message);
+      toast.error("Error signing out");
     }
   };
 
@@ -77,6 +69,7 @@ const Profile = () => {
   const deleteUserProfile = async (user, router) => {
     const auth = getAuth();
     const firestore = getFirestore();
+    const username = user.displayName || user.email;
 
     try {
       // Check the user's sign-in provider
@@ -105,6 +98,19 @@ const Profile = () => {
       if (credential) {
         await reauthenticateWithCredential(auth.currentUser, credential);
       }
+
+      // Delete the user's posts
+      const userPostsQuery = query(
+        collection(firestore, "posts"),
+        where("username", "==", user.displayName)
+      );
+      const userPostsSnapshot = await getDocs(userPostsQuery);
+      const batch = [];
+      userPostsSnapshot.forEach((doc) => {
+        batch.push(deleteDoc(doc.ref));
+      });
+
+      await Promise.all(batch);
 
       // Delete the user's profile document
       await deleteDoc(doc(firestore, "users", user.uid));
@@ -139,6 +145,21 @@ const Profile = () => {
       }
     } else {
       toast.error("User authentication state expired. Please sign in again.");
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      const postRef = doc(db, "posts", postId);
+      await deleteDoc(postRef);
+
+      setUserPosts((prevPosts) =>
+        prevPosts.filter((post) => post.id !== postId)
+      );
+      toast.success("Post deleted successfully");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      toast.error("Error deleting post");
     }
   };
 
@@ -230,6 +251,12 @@ const Profile = () => {
                         </h3>
                       </p>
                     </Link>
+                    <button
+                      className={styles.deleteButton}
+                      onClick={() => handleDeletePost(post.id)}
+                    >
+                      Delete post
+                    </button>
                     <p className={styles.desc}>
                       <span className={styles.descTitle}>Description: </span>
                       <span className={styles.descContent}>{post.content}</span>
@@ -248,85 +275,6 @@ const Profile = () => {
       ) : (
         <p>Please sign in to view your profile.</p>
       )}
-
-      <footer className={FooterStyles.footer}>
-        <div
-          className="container grid grid--footer"
-          style={{ display: "grid", gridTemplateColumns: "repeat(4, 15fr)" }}
-        >
-          <div className="logo-col col" style={{ marginRight: "20px" }}>
-            <a href="#">
-              <img
-                className={FooterStyles.img}
-                alt=" logo"
-                src="/devt-mag-high-resolution-logo-transparent.png"
-              />
-            </a>
-          </div>
-          <div className={FooterStyles.contact} style={{ flex: 2 }}>
-            <p className="footer-heading">Contact us on:</p>
-            <address className="contacts">
-              <p>
-                <a className="footer-link" href>
-                  softunifest@gmail.com
-                </a>
-              </p>
-            </address>
-          </div>
-
-          <div className="nav-col col" style={{ flex: 1 }}>
-            <p className="footer-heading">Pages</p>
-            <ul className={HeaderStyles.ul} type="none">
-              <li>
-                <a className={FooterStyles.link} href="./">
-                  Home
-                </a>
-              </li>
-              <li>
-                <a className={FooterStyles.link} href="./sell">
-                  Sell
-                </a>
-              </li>
-              <li>
-                <a className={FooterStyles.link} href="./buy">
-                  Buy
-                </a>
-              </li>
-              <li>
-                <a className={FooterStyles.link} href="#">
-                  Profile
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="nav-col col" style={{ flex: 1 }}>
-            <p className="footer-heading">Follow us</p>
-            <ul className={HeaderStyles.ul} type="none">
-              <li>
-                <a
-                  className={FooterStyles.link}
-                  href="https://www.facebook.com"
-                >
-                  Facebook
-                </a>
-              </li>
-              <li>
-                <a className={FooterStyles.link} href="https://www.twitter.com">
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a
-                  className={FooterStyles.link}
-                  href="https://www.instagram.com"
-                >
-                  Instagram
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
