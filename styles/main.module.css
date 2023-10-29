@@ -18,3 +18,9 @@
 .title {
   color: azure;
 }
+
+.topIMG {
+  align-self: center;
+  width: 50vw;
+  cursor: pointer;
+}

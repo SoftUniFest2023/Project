@@ -146,7 +146,7 @@ const Home = ({ posts }) => {
               />
             </a>
           </div>
-          <div className="address-col col" style={{ flex: 2 }}>
+          <div className={FooterStyles.contact} style={{ flex: 2 }}>
             <p className="footer-heading">Contact us on:</p>
             <address className="contacts">
               <p>

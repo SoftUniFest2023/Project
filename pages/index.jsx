@@ -57,7 +57,7 @@ export default function MyApp() {
             <div className={HeaderStyles.headerNavLow}>
               <a
                 className={`${HeaderStyles.selected} ${HeaderStyles.headerLink}`}
-                href="#"
+                href="/"
               >
                 Home
               </a>
@@ -66,9 +66,6 @@ export default function MyApp() {
               </a>
               <a className={HeaderStyles.headerLink} href="./sell">
                 Sell
-              </a>
-              <a className={HeaderStyles.headerLink} href="./zanas">
-                About
               </a>
               <a className={HeaderStyles.headerLink} href="./account">
                 Profile
@@ -123,6 +120,13 @@ export default function MyApp() {
                   </p>
                 </div>
               </div>
+
+              <a className="svg-wave" href="./register">
+                <img
+                  className={styles.topIMG}
+                  src="register-removebg-preview (1).png"
+                />
+              </a>
               <div id="img" className="col-md-4 col-sm-12">
                 <img
                   src="/devt-mag-high-resolution-logo-transparent.png"
@@ -132,9 +136,6 @@ export default function MyApp() {
             </div>
           </div>
         </div>
-        <span className="svg-wave">
-          <img className="svg-hero" src />
-        </span>
       </section>
       {/*-----Banner End-----*/}
       {/*-----About End-----*/}
@@ -146,7 +147,7 @@ export default function MyApp() {
           <div className="row">
             <div className="col-md-12">
               <div className="sectioner-header text-center">
-                <h3>What is DEVT MAG</h3>
+                <h3 className={styles.title}>What is DEVT MAG</h3>
                 <span className="line" />
                 <p>
                   DEVT MAG is a website that allows you to shop quickly, easily,
@@ -231,7 +232,7 @@ export default function MyApp() {
           <div className="row">
             <div className="col-md-12">
               <div className="sectioner-header text-center">
-                <h3 className={styles.title}>Често задавани въпроси</h3>
+                <h3 className={styles.title}>Frequently asked questions</h3>
                 <span className="line" />
               </div>
               <div className="section-content">
@@ -424,7 +425,7 @@ export default function MyApp() {
               />
             </a>
           </div>
-          <div className="address-col col" style={{ flex: 2 }}>
+          <div className={FooterStyles.contact} style={{ flex: 2 }}>
             <p className="footer-heading">Contact us on:</p>
             <address className="contacts">
               <p>
