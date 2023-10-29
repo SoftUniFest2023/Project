@@ -3,6 +3,9 @@ import { getStorage, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import HeaderStyles from "../../styles/header.module.css";
+import styles from "../../styles/productPage.module.css";
+import Link from "next/link";
 
 export async function getServerSideProps({ params }) {
   const postId = params.id;
@@ -151,20 +154,22 @@ export default function ProductPage({ post }) {
             <p className={styles.content}>
               Description: <span>{post.content}</span>
             </p>
-                  <button
-        onClick={() => {
-          handleBuyClick();
-        }}
-      >
-        Buy with stripe
-      </button>
-                  <button
-        onClick={() => {
-          handleSecondBuyClick();
-        }}
-      >
-        Buy with crypto
-      </button>
+            <button
+              className={styles.BuyButton}
+              onClick={() => {
+                handleBuyClick();
+              }}
+            >
+              Buy with stripe
+            </button>
+            <button
+              className={styles.BuyButton}
+              onClick={() => {
+                handleSecondBuyClick();
+              }}
+            >
+              Buy with crypto
+            </button>
           </div>
         </div>
       </div>
