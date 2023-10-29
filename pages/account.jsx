@@ -251,16 +251,16 @@ const Profile = () => {
                         </h3>
                       </p>
                     </Link>
-                    <button
-                      className={styles.deleteButton}
-                      onClick={() => handleDeletePost(post.id)}
-                    >
-                      Delete post
-                    </button>
                     <p className={styles.desc}>
                       <span className={styles.descTitle}>Description: </span>
                       <span className={styles.descContent}>{post.content}</span>
                     </p>
+                    <button
+                      className={styles.DelButton}
+                      onClick={() => handleDeletePost(post.id)}
+                    >
+                      Delete post
+                    </button>
                   </div>
                   <img
                     className={styles.descImg}

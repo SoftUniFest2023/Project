@@ -9,7 +9,8 @@
   overflow-wrap: break-word;
 }
 
-.button {
+.button,
+.DelButton {
   margin: 10px;
   width: 150px;
   padding: 10px 20px;
@@ -22,14 +23,20 @@
   transition: all 200ms linear;
 }
 
-.button:hover {
-  background-color: #4b0082;
+.button:hover,
+.DelButton:hover {
+  background-color: #23023a;
   color: aliceblue;
 }
 
 .link {
   text-decoration: none;
   color: #4b0082;
+}
+
+.DelButton {
+  background-color: #490068;
+  align-items: flex-start;
 }
 
 .post {
