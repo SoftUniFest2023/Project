@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import HeaderStyles from "../../styles/header.module.css";
 import styles from "../../styles/productPage.module.css";
+import Link from "next/link";
 
 export async function getServerSideProps({ params }) {
   const postId = params.id;
