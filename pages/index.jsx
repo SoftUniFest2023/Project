@@ -1,5 +1,6 @@
 import HeaderStyles from "../styles/header.module.css";
 import styles from "../styles/main.module.css";
+import FooterStyles from "../styles/footer.module.css";
 
 export default function MyApp() {
   return (
@@ -204,18 +205,17 @@ export default function MyApp() {
       {/*-----About Us-----*/}
       <div className={styles.descOfUsAll}>
         <section className="feature section-padding" data-scroll-index={2}>
-          <div className="container">
+          <div className={"container"}>
             <h1 className={styles.descOfUsTitle}>About Us</h1>
             <div className="row" id="product-row">
               <div className="col-md-6">
                 <h2 className={styles.descOfUs}>
-                  Ние сме ученици от ПМГ "Васил Друмев" от Велико Търново, ние
-                  сме на 15 години в 9 клас и обичаме да програмираме и да
-                  разработваме уеб приложения. Страстта ни към технологиите и
-                  програмирането ни вдъхновява да се занимаваме с разработка на
-                  уеб приложения. Обменяме идеи, учим нови програмни езици и
-                  работим заедно върху проекти, които да подобрят нашите умения
-                  и да донесат ползи за обществото.
+                  We are students of the "Vasil Drumev" PMG from Veliko Tarnovo,
+                  we are 15 years old in the 9th grade and we love to program
+                  and develop web applications. Our passion for technology and
+                  programming inspires us to engage in web application
+                  development. We exchange ideas, learn new programming
+                  languages and work together on projects to improve our skills
                 </h2>
               </div>
               <div className="col-md-6">
@@ -226,14 +226,13 @@ export default function MyApp() {
         </section>
       </div>
       {/*-----FAQ Start-----*/}
-      <section className="faq section-padding prelative" data-scroll-index={5}>
+      <section data-scroll-index={5}>
         <div className="container">
           <div className="row">
             <div className="col-md-12">
               <div className="sectioner-header text-center">
-                <h3>Често задавани въпроси</h3>
+                <h3 className={styles.title}>Често задавани въпроси</h3>
                 <span className="line" />
-                <p>Това са едни от най-често задаваните въпроси към нас.</p>
               </div>
               <div className="section-content">
                 <div className="row">
@@ -241,73 +240,82 @@ export default function MyApp() {
                     className="col-md-6 faq-content wow fadeInUp"
                     data-wow-delay="0.2s"
                   >
-                    <h4>Каква е политиката за връщане на продукти?</h4>
+                    <h4 className={styles.title}>
+                      How to sell products through your website?
+                    </h4>
                     <p>
-                      Предлагаме гъвкава политика за връщане на продукти в
-                      рамките на 30 дни от покупката. За повече информация,
-                      моля, проверете страницата ни с условията за връщане и
-                      замяна.
+                      To sell products through our website, you first need to
+                      create an account. Then, you can upload your products, set
+                      prices, and manage your sales through your personal
+                      profile.
                     </p>
                   </div>
                   <div
                     className="col-md-6 faq-content wow fadeInUp"
                     data-wow-delay="0.2s"
                   >
-                    <h4>Как мога да следя моята поръчка?</h4>
-                    <p>
-                      Следенето на вашата поръчка е лесно. Влезте в профила си и
-                      отидете в секцията "Моите поръчки", където ще намерите
-                      подробности за статуса на вашата доставка.
-                    </p>
-                  </div>
-                  <div
-                    className="col-md-6 faq-content wow fadeInUp"
-                    data-wow-delay="0.4s"
-                  >
-                    <h4>Какъв е процесът на доставка?</h4>
-                    <p>
-                      Обикновените поръчки се обработват в рамките на 24 часа и
-                      се доставят в рамките на 2-3 работни дни. За спешни
-                      доставки, моля, свържете се с нашия екип за обслужване на
-                      клиенти.
-                    </p>
-                  </div>
-                  <div
-                    className="col-md-6 faq-content wow fadeInUp"
-                    data-wow-delay="0.4s"
-                  >
-                    <h4>Как мога да плащам за своите покупки?</h4>
-                    <p>
-                      Приемаме различни методи на плащане, включително кредитни
-                      карти, дебитни карти и онлайн плащания чрез платформи като
-                      Stripe.
-                    </p>
-                  </div>
-                  <div
-                    className="col-md-6 faq-content wow fadeInUp"
-                    data-wow-delay="0.6s"
-                  >
-                    <h4>Имате ли програма за лоялност за постоянни клиенти?</h4>
-                    <p>
-                      Да, ние предлагаме програма за лоялност, която ви дава
-                      възможност да получавате наградни точки за всяка покупка,
-                      които след това можете да използвате за отстъпки или
-                      специални предложения.
-                    </p>
-                  </div>
-                  <div
-                    className="col-md-6 faq-content wow fadeInUp"
-                    data-wow-delay="0.6s"
-                  >
-                    <h4>
-                      Как мога да се свържа с вашия екип за обслужване на
-                      клиенти?
+                    <h4 className={styles.title}>
+                      What types of products can I sell?
                     </h4>
                     <p>
-                      Нашата клиентска поддръжка е на разположение 24/7. Можете
-                      да се свържете с нас чрез електронна поща, телефон или чат
-                      през нашия уебсайт. Ние сме тук, за да ви помогнем с всяко
-                      запитване или проблем, с който се сблъскате.
+                      We support a wide range of products, including fashion,
+                      electronics, home appliances, books, and much more. You
+                      can sell almost anything that complies with our product
+                      listing policies.
+                    </p>
+                  </div>
+                  <div
+                    className="col-md-6 faq-content wow fadeInUp"
+                    data-wow-delay="0.4s"
+                  >
+                    <h4 className={styles.title}>
+                      What is the procedure for payment and delivery?
+                    </h4>
+                    <p>
+                      Payments are processed through secure online platforms,
+                      and delivery is carried out by our delivery partners. You
+                      can choose different delivery methods depending on your
+                      preferences.
+                    </p>
+                  </div>
+                  <div
+                    className="col-md-6 faq-content wow fadeInUp"
+                    data-wow-delay="0.4s"
+                  >
+                    <h4 className={styles.title}>
+                      Are there any restrictions on the number of products I can
+                      sell?
+                    </h4>
+                    <p>
+                      Currently, there are no restrictions on the number of
+                      products you can sell. You can upload as many as you wish,
+                      provided they comply with our rules and regulations.
+                    </p>
+                  </div>
+                  <div
+                    className="col-md-6 faq-content wow fadeInUp"
+                    data-wow-delay="0.6s"
+                  >
+                    <h4 className={styles.title}>
+                      What is the delivery process like?
+                    </h4>
+                    <p>
+                      Regular orders are processed within 24 hours and delivered
+                      within 2-3 working days. For urgent deliveries, please
+                      contact our customer service team.
+                    </p>
+                  </div>
+                  <div
+                    className="col-md-6 faq-content wow fadeInUp"
+                    data-wow-delay="0.6s"
+                  >
+                    <h4 className={styles.title}>
+                      How can I pay for my purchases?
+                    </h4>
+                    <p>
+                      We accept various payment methods, including credit cards,
+                      debit cards, and online payments through platforms such as
+                      Stripe.
                     </p>
                   </div>
                 </div>
@@ -402,99 +410,77 @@ export default function MyApp() {
       </section>
       {/*-----Testimonial End-----*/}
 
-      <footer
-        className="footer"
-        id="kraj"
-        style={{ backgroundColor: "#e6e6fa", padding: "40px 0" }}
-      >
+      <footer className={FooterStyles.footer}>
         <div
           className="container grid grid--footer"
-          style={{ display: "flex", justifyContent: "space-between" }}
+          style={{ display: "grid", gridTemplateColumns: "repeat(4, 15fr)" }}
         >
-          <div className="logo-col col" style={{ flex: 2 }}>
-            <a href="#" className="footer-logo">
-              <img className="logo" alt=" logo" src="logo.png" />
+          <div className="logo-col col" style={{ marginRight: "20px" }}>
+            <a href="#">
+              <img
+                className={FooterStyles.img}
+                alt=" logo"
+                src="/devt-mag-high-resolution-logo-transparent.png"
+              />
             </a>
-            <p className="copyright" style={{ marginTop: "20px" }}>
-              Copyright © <span className="year">2023</span> by DEVT, Inc. All
-              rights reserved.
-            </p>
           </div>
           <div className="address-col col" style={{ flex: 2 }}>
-            <p className="footer-heading">Свържи се с нас</p>
+            <p className="footer-heading">Contact us on:</p>
             <address className="contacts">
-              <p className="address">град Велико Търново</p>
               <p>
-                <a className="footer-link" href="tel:415-201-6370" />
-                <br />
                 <a className="footer-link" href>
                   softunifest@gmail.com
                 </a>
               </p>
             </address>
           </div>
+
           <div className="nav-col col" style={{ flex: 1 }}>
-            <p className="footer-heading">Акаунт</p>
-            <ul className="footer-nav">
-              <li>Create account</li>
-              <li>Sign in</li>
-            </ul>
-          </div>
-          <div className="nav-col col" style={{ flex: 1 }}>
-            <p className="footer-heading">Компанията</p>
-            <ul className="footer-nav">
+            <p className="footer-heading">Pages</p>
+            <ul className={HeaderStyles.ul} type="none">
               <li>
-                <a className="footer-link" href="#">
-                  За "DEVT"
+                <a className={FooterStyles.link} href="#">
+                  Home
                 </a>
               </li>
               <li>
-                <a className="footer-link" href="#">
-                  За бизнеса
+                <a className={FooterStyles.link} href="./sell">
+                  Sell
                 </a>
               </li>
               <li>
-                <a className="footer-link" href="#">
-                  Кариeра
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="nav-col col" style={{ flex: 1 }}>
-            <p className="footer-heading">Ресурси</p>
-            <ul className="footer-nav">
-              <li>
-                <a className="footer-link" href="#">
-                  Хранилище
+                <a className={FooterStyles.link} href="./buy">
+                  Buy
                 </a>
               </li>
               <li>
-                <a className="footer-link" href="#">
-                  Помощ
-                </a>
-              </li>
-              <li>
-                <a className="footer-link" href="#">
-                  Privacy &amp; terms
+                <a className={FooterStyles.link} href="./account">
+                  Profile
                 </a>
               </li>
             </ul>
           </div>
           <div className="nav-col col" style={{ flex: 1 }}>
-            <p className="footer-heading">Последвайте ни</p>
-            <ul className="footer-nav">
+            <p className="footer-heading">Follow us</p>
+            <ul className={HeaderStyles.ul} type="none">
               <li>
-                <a className="footer-link" href="https://www.facebook.com">
+                <a
+                  className={FooterStyles.link}
+                  href="https://www.facebook.com"
+                >
                   Facebook
                 </a>
               </li>
               <li>
-                <a className="footer-link" href="https://www.twitter.com">
+                <a className={FooterStyles.link} href="https://www.twitter.com">
                   Twitter
                 </a>
               </li>
               <li>
-                <a className="footer-link" href="https://www.instagram.com">
+                <a
+                  className={FooterStyles.link}
+                  href="https://www.instagram.com"
+                >
                   Instagram
                 </a>
               </li>

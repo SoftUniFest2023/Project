@@ -10,6 +10,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useState, useEffect } from "react";
 import HeaderStyles from "../styles/header.module.css";
 import styles from "../styles/sell.module.css";
+import FooterStyles from "../styles/footer.module.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import toast from "react-hot-toast";
 
@@ -239,6 +240,85 @@ function CreatePost() {
           showcase your offerings and connect with potential buyers.
         </p>
       </div>
+
+      <footer className={FooterStyles.footer}>
+        <div
+          className="container grid grid--footer"
+          style={{ display: "grid", gridTemplateColumns: "repeat(4, 15fr)" }}
+        >
+          <div className="logo-col col" style={{ marginRight: "20px" }}>
+            <a href="#">
+              <img
+                className={FooterStyles.img}
+                alt=" logo"
+                src="/devt-mag-high-resolution-logo-transparent.png"
+              />
+            </a>
+          </div>
+          <div className="address-col col" style={{ flex: 2 }}>
+            <p className="footer-heading">Contact us on:</p>
+            <address className="contacts">
+              <p>
+                <a className="footer-link" href>
+                  softunifest@gmail.com
+                </a>
+              </p>
+            </address>
+          </div>
+
+          <div className="nav-col col" style={{ flex: 1 }}>
+            <p className="footer-heading">Pages</p>
+            <ul className={HeaderStyles.ul} type="none">
+              <li>
+                <a className={FooterStyles.link} href="./">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a className={FooterStyles.link} href="#">
+                  Sell
+                </a>
+              </li>
+              <li>
+                <a className={FooterStyles.link} href="./buy">
+                  Buy
+                </a>
+              </li>
+              <li>
+                <a className={FooterStyles.link} href="./account">
+                  Profile
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div className="nav-col col" style={{ flex: 1 }}>
+            <p className="footer-heading">Follow us</p>
+            <ul className={HeaderStyles.ul} type="none">
+              <li>
+                <a
+                  className={FooterStyles.link}
+                  href="https://www.facebook.com"
+                >
+                  Facebook
+                </a>
+              </li>
+              <li>
+                <a className={FooterStyles.link} href="https://www.twitter.com">
+                  Twitter
+                </a>
+              </li>
+              <li>
+                <a
+                  className={FooterStyles.link}
+                  href="https://www.instagram.com"
+                >
+                  Instagram
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -37,6 +37,7 @@
 
 .headerLink:hover {
   color: rgb(216, 174, 255);
+  text-decoration: none;
 }
 
 .selected {
