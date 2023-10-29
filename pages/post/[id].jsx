@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react";
+import { getFirestore, doc, getDoc } from "firebase/firestore/lite";
+import { getStorage, ref } from "firebase/storage";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-import HeaderStyles from "../../styles/header.module.css";
-import styles from "../../styles/productPage.module.css";
-import Link from "next/link";
+import toast from "react-hot-toast";
 
 export async function getServerSideProps({ params }) {
   const postId = params.id;
@@ -36,18 +35,22 @@ export async function getServerSideProps({ params }) {
   };
 }
 
-// ProductPage.js
-// ...
 export default function ProductPage({ post }) {
-  const [clientSecret, setClientSecret] = useState(null);
   const router = useRouter();
+  const [paymentStatus, setPaymentStatus] = useState(null);
+  const [secondPaymentStatus, setSecondPaymentStatus] = useState(null);
 
-  // When a user clicks the Buy button, generate a random orderId
+  useEffect(() => {
+    // This code runs on initial page load
+    const id = window.location.pathname.split("/").pop();
+    const price = post.price;
+    router.push(`../post/${id}?price=${price}`);
+  }, []);
+
   const handleBuyClick = async () => {
     try {
       const id = window.location.pathname.split("/").pop();
-      const price = post.price; // Ensure price is a number
-
+      const price = post.price;
       // Redirect to the dynamic payment page with postId and price as query parameters
       router.push(`/payment/${id}?price=${price}`);
     } catch (error) {
@@ -55,6 +58,31 @@ export default function ProductPage({ post }) {
     }
   };
 
+  const handleSecondBuyClick = async () => {
+    try {
+      const { postId, price } = router.query; // Get postId and price from the query
+      console.log(price);
+      const response = await fetch("/api/create-charge", {
+        method: "POST",
+        body: JSON.stringify({ price }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        const data = await response.json();
+        window.location.href = data.charge.data.hosted_url;
+        setSecondPaymentStatus(data.message);
+      } else {
+        const errorData = await response.json();
+        setSecondPaymentStatus(errorData.error);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      setSecondPaymentStatus("An error occurred while creating the charge.");
+    }
+  };
   return (
     <div className={styles.container}>
       {/* Header */}
@@ -123,9 +151,20 @@ export default function ProductPage({ post }) {
             <p className={styles.content}>
               Description: <span>{post.content}</span>
             </p>
-            <button className={styles.BuyButton} onClick={handleBuyClick}>
-              Buy
-            </button>
+                  <button
+        onClick={() => {
+          handleBuyClick();
+        }}
+      >
+        Buy with stripe
+      </button>
+                  <button
+        onClick={() => {
+          handleSecondBuyClick();
+        }}
+      >
+        Buy with crypto
+      </button>
           </div>
         </div>
       </div>
