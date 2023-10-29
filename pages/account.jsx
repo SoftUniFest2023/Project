@@ -18,7 +18,7 @@ import {
 } from "firebase/firestore";
 import Link from "next/link"; // Import the Link component from Next.js
 import { useRouter } from "next/router";
-
+import { app } from "../lib/firebase";
 import { signOut, reauthenticateWithCredential } from "firebase/auth";
 import toast from "react-hot-toast";
 import styles from "../styles/account.module.css";
@@ -28,9 +28,9 @@ import FooterStyles from "../styles/footer.module.css";
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
-  const auth = getAuth();
-  const db = getFirestore();
-  const router = useRouter();
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const router = useRouter(app);
 
   useEffect(() => {
     // Check if the user is authenticated

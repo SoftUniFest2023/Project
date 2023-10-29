@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../lib/firebase";
 const app = initializeApp(firebaseConfig);
+import toast from "react-hot-toast";
+
 
 export default function ConfirmEmail() {
   const [loading, setLoading] = useState(true);
