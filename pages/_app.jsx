@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from "../lib/firebase";
 import { getDoc, doc, collection, getFirestore } from "firebase/firestore";
 import { Toaster, toast } from "react-hot-toast";
 import "../styles/reset.css";
 import "../styles/global.css";
-
-initializeApp(firebaseConfig);
+import { app } from "../lib/firebase";
 
 // Function to check if the user's email is verified
 const isEmailVerified = async (user) => {
@@ -26,8 +23,8 @@ export default function MyApp({ Component, pageProps }) {
   const [username, setUsername] = useState(null);
 
   useEffect(() => {
-    const auth = getAuth();
-    const db = getFirestore();
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
@@ -40,12 +37,23 @@ export default function MyApp({ Component, pageProps }) {
         if (userSnapshot.exists()) {
           const userData = userSnapshot.data();
           setUsername(userData.username);
+
+          // Check the user's role
+          if (
+            user &&
+            userData.role === "customer" &&
+            router.pathname === "/sell"
+          ) {
+            router.push("/"); // Redirect to the customer dashboard
+            toast.error("You need to be a seller");
+            return;
+          }
         }
       }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     // Check email verification status when the user changes
@@ -76,7 +84,7 @@ export default function MyApp({ Component, pageProps }) {
   }
 
   if (user && router.pathname === "/register") {
-    router.push("/");
+    router.push("/account");
     return null;
   }
 
